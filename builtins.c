@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "builtins.h"
+#include <unistd.h>
 
 typedef struct {
     char *name;
@@ -9,6 +10,7 @@ typedef struct {
 
 Builtin builtins[] = {
     {"exit", builtin_exit},
+    {"cd", builtin_cd},
 };
 
 int check_builtins(char **args) {
@@ -23,3 +25,6 @@ int check_builtins(char **args) {
 }
 
 int builtin_exit(char **args) { exit(0); }
+int builtin_cd(char **args) {
+    chdir(args[1]);
+}
