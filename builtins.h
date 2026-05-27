@@ -1,4 +1,4 @@
 #pragma once
 
-void execute(char **args);
+int check_builtins(char **args);
 int builtin_exit(char **args);

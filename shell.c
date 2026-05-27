@@ -2,12 +2,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "builtins.h"
+
 
 void execute(char **args) {
-    // TODO: Check builtins
-    // MARK: child process
+    if (!check_builtins(args)) {
+        return;
+    }
     pid_t pid = fork();
     if (pid == 0) {
         execvp(args[0], args);
@@ -17,3 +21,5 @@ void execute(char **args) {
         waitpid(pid, NULL, 0);
     }
 }
+
+

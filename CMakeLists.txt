@@ -7,4 +7,5 @@ add_executable(conch
         main.c
         parser.c
         shell.c
+        builtins.c
 )
