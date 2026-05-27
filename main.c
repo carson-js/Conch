@@ -1,24 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "parser.h"
+
+#define MAX_INPUT 1024
 
 int main(void){
-    while(true){
-        char input[100];
-        char *argv[100];
-        int argc = 0;
+    while(1){
+        char input[MAX_INPUT];
         printf("conch> ");
         if (fgets(input, sizeof(input), stdin) == NULL) break;
-        char *token = strtok(input, " ");
-        for (int i = 0; token != NULL; i++) {
-            if (*token == '\n') break;
-            if (token[strlen(token) - 1] == '\n') token[strlen(token) - 1] = '\0';
-            argv[i] = token;
-            ++argc;
-            token = strtok(NULL, " ");
+        input[strlen(input)-1] = '\0';
+        char **args = parse_input(input);
+        for (int i = 0; args[i] != NULL; i++) {
+            printf("%s\n", args[i]);
         }
-        for (int i = 0; i<argc; i++) {
-            printf("%s\n", argv[i]);
-        }
+        free(args);
     }
     return 0;
 }
