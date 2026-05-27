@@ -11,9 +11,10 @@ int main(void){
         char input[MAX_INPUT];
         printf("conch> ");
         if (fgets(input, sizeof(input), stdin) == NULL) break;
-        input[strlen(input)-1] = '\0';
+        size_t len = strlen(input);
+        if (len > 0) input[len - 1] = '\0';
         char **args = parse_input(input);
-        execute(args);
+        if (args[0] != NULL) execute(args);
         free(args);
     }
     return 0;
