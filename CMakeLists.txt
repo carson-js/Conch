@@ -6,4 +6,5 @@ set(CMAKE_C_STANDARD 23)
 add_executable(conch
         main.c
         parser.c
+        shell.c
 )
