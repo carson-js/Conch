@@ -52,7 +52,7 @@ conch/
 
 ## Build & Run
 
-**Requirements:** CMake 3.20+, a C23-compatible compiler (GCC or Clang)
+**Requirements:** CMake 3.20+, a C11-compatible compiler (GCC or Clang)
 
 ```bash
 # Clone the repo
