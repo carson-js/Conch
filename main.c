@@ -9,7 +9,7 @@
 int main(void){
     while(1){
         char input[MAX_INPUT];
-        printf("conch> ");
+        printf("conch > ");
         if (fgets(input, sizeof(input), stdin) == NULL) break;
         size_t len = strlen(input);
         if (len > 0) input[len - 1] = '\0';
