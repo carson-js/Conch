@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "shell.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -6,11 +7,33 @@
 char **parse_input(char *input) {
     char **args = malloc(sizeof(char *) * MAX_ARGS);
     int i = 0;
-    char *token = strtok(input, " ");
-    for (; token != NULL && i < MAX_ARGS - 1; i++) {
-        if (*token == '\n') break;
-        args[i] = token;
-        token = strtok(NULL, " ");
+    int j = 0;
+    int is_inside_quotes = 0;
+    char tmp_token[MAX_INPUT];
+    for (int k = 0; input[k] != '\0'; k++) {
+        if (input[k] == ' ' && is_inside_quotes == 0) {
+            if (j == 0) { continue; }
+            tmp_token[j] = '\0';
+            j = 0;
+            args[i] = strdup(tmp_token);
+            ++i;
+            continue;
+        }
+        if (input[k] == '"') {
+            if (is_inside_quotes == 0) {
+                is_inside_quotes = 1;
+            } else {
+                is_inside_quotes = 0;
+            }
+            continue;
+        }
+        tmp_token[j] = input[k];
+        ++j;
+    }
+    if (j != 0) {
+        tmp_token[j] = '\0';
+        args[i] = strdup(tmp_token);
+        ++i;
     }
     args[i] = NULL;
     return args;

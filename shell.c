@@ -32,23 +32,17 @@ int redirect_check(char **args) {
     for (int i = 0; args[i] != NULL; i++) {
         if (!strcmp(args[i], ">")) {
             args[i] = (char *) NULL;
-            //open file
             int fd = open(args[i+1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
             if (fd == -1) { return -1; }
-            //dup2
             dup2(fd, 1);
-            //close file
             close(fd);
             break;
         }
         if (!strcmp(args[i], "<")) {
             args[i] = (char *) NULL;
-            //open file
             int fd = open(args[i+1], O_RDONLY);
             if (fd == -1) { return -1; }
-            //dup2
             dup2(fd, 0);
-            //close file
             close(fd);
             break;
         }

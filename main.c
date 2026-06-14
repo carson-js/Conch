@@ -4,8 +4,6 @@
 #include "parser.h"
 #include "shell.h"
 
-#define MAX_INPUT 1024
-
 int main(void){
     while(1){
         char input[MAX_INPUT];
@@ -15,6 +13,9 @@ int main(void){
         if (len > 0) input[len - 1] = '\0';
         char **args = parse_input(input);
         if (args[0] != NULL) execute(args);
+        for (int i = 0; args[i] != NULL; i++) {
+            free(args[i]);
+        }
         free(args);
     }
     return 0;
