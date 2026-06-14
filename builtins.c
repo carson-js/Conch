@@ -39,7 +39,7 @@ int builtin_about(char **args) {
         "/ /__/ /_/ / / / / /__/ / / /\n"
         "\\___/\\____/_/ /_/\\___/_/ /_/ \n"
         "                             \n"
-        "Version 0.4.0\n"
+        "Version 0.5.0\n"
         "Built in C by Carson Smith\n"
         "https://www.github.com/carson-js/conch\n"
     );

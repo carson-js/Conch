@@ -9,7 +9,7 @@
 # Conch
 > Conch is a lightweight Unix shell written in C from scratch.
 
-![Version](https://img.shields.io/badge/version-0.4.0-blue)
+![Version](https://img.shields.io/badge/version-0.5.0-blue)
 ![Language](https://img.shields.io/badge/language-C-informational)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -24,6 +24,7 @@ This project was built to develop an understanding of how shells work at the sys
 - Interactive prompt with a read-eval-print loop (REPL)
 - Execution of external system commands through `PATH` resolution
 - Builtin commands: `cd`, `exit`, `about`
+- Output and input redirection (`>`, `<`)
 - Graceful handling of empty input and EOF
 - Modular architecture split across focused source files
 
@@ -45,7 +46,7 @@ External commands are executed by forking a child process with `fork()` and repl
 conch/
 ├── main.c          # Entry point and REPL loop
 ├── parser.c/h      # Tokenizes raw input into an argument array
-├── shell.c/h       # Execution logic; routes to builtins or forks a child
+├── shell.c/h       # Execution logic; routes to builtins or forks a child, checks for redirection
 ├── builtins.c/h    # Builtin command implementations
 └── CMakeLists.txt
 ```
@@ -69,7 +70,6 @@ cmake --build cmake-build-debug
 
 ## Planned Features
 
-- Output and input redirection (`>`, `<`)
 - Pipes (`|`)
 - Command history (up arrow)
 - Environment variable expansion (`$HOME`, `$PATH`)
