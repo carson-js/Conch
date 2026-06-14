@@ -7,13 +7,17 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "builtins.h"
+#include "parser.h"
 
 
 void execute(char **args) {
+    int pipe_count = 0;
     if (!check_builtins(args)) {
         return;
     }
-    if (!pipe_check(args)) {
+    pipe_count = pipe_check(args);
+    if (pipe_count != 0) {
+        pipeline(args, &pipe_count);
         return;
     }
     pid_t pid = fork();
@@ -54,22 +58,33 @@ int redirect_check(char **args) {
 }
 
 int pipe_check(char **args) {
+    int num = 0;
     for (int i = 0; args[i] != NULL; i++) {
         if (!strcmp(args[i], "|")) {
-            return pipeline(args, i);
+            num++;
+            args[i] = (char *) NULL;
         }
     }
-    return 1;
+    return num;
 }
 
-int pipeline(char **args, int i) {
-    // call pipe_check to check for more pipes
-    
+int pipeline(char **args, const int *pipe_count) {
     // split args
-
+    char ***commands = malloc(sizeof(char **) * (*pipe_count + 1));
+    int j = 0;
+    for (int i = 0; i < *pipe_count+1; i++) {
+        int is_first = 0;
+        for (; args[j] != NULL; j++) {
+            if (is_first == 0) {
+                commands[i] = &args[j];
+                is_first = 1;
+            }
+        }
+        ++j;
+    }
     // create pipes
 
     // fork and execute
-
+    free (commands);
     return 0;
 }
