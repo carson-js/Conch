@@ -13,6 +13,9 @@ void execute(char **args) {
     if (!check_builtins(args)) {
         return;
     }
+    if (!pipe_check(args)) {
+        return;
+    }
     pid_t pid = fork();
     if (pid == 0) {
         if (redirect_check(args) == -1) {
@@ -48,4 +51,25 @@ int redirect_check(char **args) {
         }
     }
     return 1;
+}
+
+int pipe_check(char **args) {
+    for (int i = 0; args[i] != NULL; i++) {
+        if (!strcmp(args[i], "|")) {
+            return pipeline(args, i);
+        }
+    }
+    return 1;
+}
+
+int pipeline(char **args, int i) {
+    // call pipe_check to check for more pipes
+    
+    // split args
+
+    // create pipes
+
+    // fork and execute
+
+    return 0;
 }
