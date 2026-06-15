@@ -61,6 +61,7 @@ int pipe_check(char **args) {
     for (int i = 0; args[i] != NULL; i++) {
         if (!strcmp(args[i], "|")) {
             num++;
+            free(args[i]);
             args[i] = (char *) NULL;
         }
     }
