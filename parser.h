@@ -2,4 +2,4 @@
 #define MAX_ARGS 64
 #define MAX_INPUT 1024
 
-char **parse_input(char *input);
+char **parse_input(const char *input, int *args_count);

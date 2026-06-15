@@ -26,7 +26,6 @@ void execute(char **args) {
             perror("error opening file");
             exit(1);
         }
-        redirect_check(args);
         execvp(args[0], args);
         perror("execvp failed");
         exit(1);
@@ -41,7 +40,7 @@ int redirect_check(char **args) {
             args[i] = (char *) NULL;
             int fd = open(args[i+1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
             if (fd == -1) { return -1; }
-            dup2(fd, 1);
+            dup2(fd, STDOUT_FILENO);
             close(fd);
             break;
         }
@@ -49,7 +48,7 @@ int redirect_check(char **args) {
             args[i] = (char *) NULL;
             int fd = open(args[i+1], O_RDONLY);
             if (fd == -1) { return -1; }
-            dup2(fd, 0);
+            dup2(fd, STDIN_FILENO);
             close(fd);
             break;
         }
@@ -68,7 +67,14 @@ int pipe_check(char **args) {
     return num;
 }
 
-int pipeline(char **args, const int *pipe_count) {
+void close_all_pipes(const int *pipe_count, int pipes[][2]) {
+    for (int i = 0; i < *pipe_count; i++) {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
+}
+
+void pipeline(char **args, const int *pipe_count) {
     // split args
     char ***commands = malloc(sizeof(char **) * (*pipe_count + 1));
     int j = 0;
@@ -83,8 +89,34 @@ int pipeline(char **args, const int *pipe_count) {
         ++j;
     }
     // create pipes
-
+    int pipes[*pipe_count][2];
+    for (int i = 0; i < *pipe_count; i++) {
+        pipe(pipes[i]);
+    }
     // fork and execute
+    int pids[*pipe_count + 1];
+    for (int i = 0; i <= *pipe_count; i++) {
+        pid_t pid = fork();
+        pids[i] = pid;
+        if (pid == 0) {
+            // connect pipes as child
+            if (i > 0) { dup2(pipes[i - 1][0], STDIN_FILENO); }
+            if (i < *pipe_count) { dup2(pipes[i][1], STDOUT_FILENO); }
+            close_all_pipes(pipe_count, pipes);
+            if (redirect_check(commands[i]) == -1) {
+                perror("error opening file");
+                exit(1);
+            }
+            execvp(commands[i][0], commands[i]);
+            perror("execvp failed");
+            exit(1);
+        }
+    }
+    // close parent pipes
+    close_all_pipes(pipe_count, pipes);
+    // parent waits for children to finish
+    for (int i = 0; i <= *pipe_count; i++) {
+        waitpid(pids[i], NULL, 0);
+    }
     free (commands);
-    return 0;
 }

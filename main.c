@@ -11,9 +11,10 @@ int main(void){
         if (fgets(input, sizeof(input), stdin) == NULL) break;
         size_t len = strlen(input);
         if (len > 0) input[len - 1] = '\0';
-        char **args = parse_input(input);
+        int args_count = 0;
+        char **args = parse_input(input, &args_count);
         if (args[0] != NULL) execute(args);
-        for (int i = 0; args[i] != NULL; i++) {
+        for (int i = 0; i < args_count; i++) {
             free(args[i]);
         }
         free(args);

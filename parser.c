@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char **parse_input(char *input) {
+char **parse_input(const char *input, int *args_count) {
     char **args = malloc(sizeof(char *) * MAX_ARGS);
     int i = 0;
     int j = 0;
@@ -36,5 +36,6 @@ char **parse_input(char *input) {
         ++i;
     }
     args[i] = NULL;
+    *args_count = i;
     return args;
 }
