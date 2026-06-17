@@ -9,7 +9,7 @@
 # Conch
 > Conch is a lightweight Unix shell written in C from scratch.
 
-![Version](https://img.shields.io/badge/version-0.5.0-blue)
+![Version](https://img.shields.io/badge/version-0.6.0-blue)
 ![Language](https://img.shields.io/badge/language-C-informational)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -25,6 +25,7 @@ This project was built to develop an understanding of how shells work at the sys
 - Execution of external system commands through `PATH` resolution
 - Builtin commands: `cd`, `exit`, `about`
 - Output and input redirection (`>`, `<`)
+- Pipes (`|`), supporting an N number of pipes consecutively
 - Graceful handling of empty input and EOF
 - Modular architecture split across focused source files
 
@@ -70,7 +71,6 @@ cmake --build cmake-build-debug
 
 ## Planned Features
 
-- Pipes (`|`)
 - Command history (up arrow)
 - Environment variable expansion (`$HOME`, `$PATH`)
 - Background job execution (`&`)
